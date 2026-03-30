@@ -77,37 +77,42 @@ echo ""
 
 # --- Страны ---
 echo -e "${CYAN}--- Какие страны заблокировать? ---${NC}"
-echo -e "Введи коды стран через пробел (ISO 3166-1 alpha-2)"
 echo ""
-echo -e "${CYAN}Популярные:${NC}"
-echo -e "  ${GREEN}ua${NC} Украина     ${GREEN}pk${NC} Пакистан   ${GREEN}ir${NC} Иран       ${GREEN}in${NC} Индия"
-echo -e "  ${GREEN}cn${NC} Китай       ${GREEN}bd${NC} Бангладеш  ${GREEN}vn${NC} Вьетнам    ${GREEN}id${NC} Индонезия"
-echo -e "  ${GREEN}br${NC} Бразилия    ${GREEN}ng${NC} Нигерия    ${GREEN}ph${NC} Филиппины  ${GREEN}iq${NC} Ирак"
+echo -e "${CYAN}Готовые пресеты:${NC}"
 echo ""
-echo -e "${CYAN}СНГ:${NC}"
-echo -e "  ${GREEN}ru${NC} Россия      ${GREEN}by${NC} Беларусь   ${GREEN}kz${NC} Казахстан  ${GREEN}uz${NC} Узбекистан"
-echo -e "  ${GREEN}az${NC} Азербайджан ${GREEN}ge${NC} Грузия     ${GREEN}am${NC} Армения    ${GREEN}md${NC} Молдова"
-echo -e "  ${GREEN}kg${NC} Кыргызстан  ${GREEN}tj${NC} Таджикистан ${GREEN}tm${NC} Туркменистан"
+echo -e "  ${GREEN}1${NC}) Базовый       ${YELLOW}pk ir${NC}                    Пакистан, Иран"
+echo -e "  ${GREEN}2${NC}) Рекомендуемый ${YELLOW}pk ir ua in cn${NC}           + Украина, Индия, Китай"
+echo -e "  ${GREEN}3${NC}) Расширенный   ${YELLOW}pk ir ua in cn bd vn id${NC}  + Бангладеш, Вьетнам, Индонезия"
+echo -e "  ${GREEN}4${NC}) Свой набор    Ввести коды вручную"
 echo ""
-echo -e "${CYAN}Европа:${NC}"
-echo -e "  ${GREEN}de${NC} Германия    ${GREEN}nl${NC} Нидерланды ${GREEN}fr${NC} Франция    ${GREEN}gb${NC} Великобритания"
-echo -e "  ${GREEN}pl${NC} Польша      ${GREEN}it${NC} Италия     ${GREEN}es${NC} Испания    ${GREEN}se${NC} Швеция"
-echo -e "  ${GREEN}fi${NC} Финляндия   ${GREEN}ro${NC} Румыния    ${GREEN}cz${NC} Чехия      ${GREEN}tr${NC} Турция"
-echo ""
-echo -e "${CYAN}Другие:${NC}"
-echo -e "  ${GREEN}us${NC} США         ${GREEN}ca${NC} Канада     ${GREEN}au${NC} Австралия  ${GREEN}jp${NC} Япония"
-echo -e "  ${GREEN}kr${NC} Юж. Корея   ${GREEN}sg${NC} Сингапур   ${GREEN}il${NC} Израиль    ${GREEN}sa${NC} Сауд. Аравия"
-echo ""
-echo -e "Полный список: ${CYAN}https://www.ipdeny.com/ipblocks/data/countries/${NC}"
-echo ""
+read -rp "$(echo -e "${YELLOW}Выбери [1/2/3/4]: ${NC}")" PRESET
 
-while true; do
-    read -rp "$(echo -e "${YELLOW}Коды стран (например: pk ir ua): ${NC}")" COUNTRIES_INPUT
-    if [ -n "$COUNTRIES_INPUT" ]; then
-        break
-    fi
-    echo -e "${RED}Нужно указать хотя бы одну страну${NC}"
-done
+case "$PRESET" in
+    1) COUNTRIES_INPUT="pk ir" ;;
+    2) COUNTRIES_INPUT="pk ir ua in cn" ;;
+    3) COUNTRIES_INPUT="pk ir ua in cn bd vn id" ;;
+    4|*)
+        echo ""
+        echo -e "${CYAN}Коды стран (ISO 3166-1):${NC}"
+        echo ""
+        echo -e "  ${GREEN}ua${NC} Украина     ${GREEN}pk${NC} Пакистан   ${GREEN}ir${NC} Иран       ${GREEN}in${NC} Индия"
+        echo -e "  ${GREEN}cn${NC} Китай       ${GREEN}bd${NC} Бангладеш  ${GREEN}vn${NC} Вьетнам    ${GREEN}id${NC} Индонезия"
+        echo -e "  ${GREEN}br${NC} Бразилия    ${GREEN}ng${NC} Нигерия    ${GREEN}ph${NC} Филиппины  ${GREEN}iq${NC} Ирак"
+        echo -e "  ${GREEN}ru${NC} Россия      ${GREEN}by${NC} Беларусь   ${GREEN}kz${NC} Казахстан  ${GREEN}uz${NC} Узбекистан"
+        echo -e "  ${GREEN}de${NC} Германия    ${GREEN}nl${NC} Нидерланды ${GREEN}fr${NC} Франция    ${GREEN}gb${NC} Великобритания"
+        echo -e "  ${GREEN}us${NC} США         ${GREEN}tr${NC} Турция     ${GREEN}il${NC} Израиль    ${GREEN}sa${NC} Сауд. Аравия"
+        echo ""
+        echo -e "Полный список: ${CYAN}https://www.ipdeny.com/ipblocks/data/countries/${NC}"
+        echo ""
+        while true; do
+            read -rp "$(echo -e "${YELLOW}Коды стран (например: pk ir ua): ${NC}")" COUNTRIES_INPUT
+            if [ -n "$COUNTRIES_INPUT" ]; then
+                break
+            fi
+            echo -e "${RED}Нужно указать хотя бы одну страну${NC}"
+        done
+        ;;
+esac
 
 COUNTRIES=$(echo "$COUNTRIES_INPUT" | tr '[:upper:]' '[:lower:]')
 echo ""
